@@ -60,7 +60,7 @@ var MagnetKue = function (_Base) {
                 config = Object.assign(_kue4.default, this.config.kue);
                 queues = {};
                 _context2.prev = 2;
-                folderPath = process.cwd() + '/server/queues';
+                folderPath = process.cwd() + '/server/job_queues';
                 _context2.next = 6;
                 return _fs2.default.exists(folderPath);
 
@@ -103,7 +103,7 @@ var MagnetKue = function (_Base) {
                               case 0:
                                 _context.prev = 0;
                                 _context.next = 3;
-                                return queue.process.call(_this2, data);
+                                return queue.process.call(_this2, _this2.app, data);
 
                               case 3:
                                 _context.t0 = _context.sent;

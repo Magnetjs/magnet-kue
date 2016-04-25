@@ -9,7 +9,7 @@ export default class MagnetKue extends Base {
     let config = Object.assign(defaultConfig, this.config.kue);
     let queues = {};
     try {
-      const folderPath = process.cwd() + '/server/queues';
+      const folderPath = `${process.cwd()}/server/job_queues`;
       await fs.exists(folderPath);
       queues = requireAll(folderPath);
     } catch (err) {
@@ -29,7 +29,7 @@ export default class MagnetKue extends Base {
       if (queue.process) {
         processArgs.push(async (data, done) => {
           try {
-            done(null, await queue.process.call(this, data));
+            done(null, await queue.process.call(this, this.app, data));
           } catch (err) {
             done(err);
           }
