@@ -51,13 +51,13 @@ var MagnetKue = function (_Base) {
       var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
         var _this2 = this;
 
-        var config, queues, folderPath, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _loop, _iterator, _step;
+        var queues, folderPath, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _loop, _iterator, _step;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                config = Object.assign(_kue4.default, this.config.kue);
+                this.kueConfig = Object.assign(_kue4.default, this.config.kue);
                 queues = {};
                 _context2.prev = 2;
                 folderPath = process.cwd() + '/server/job_queues';
@@ -77,12 +77,20 @@ var MagnetKue = function (_Base) {
 
               case 12:
 
-                this.app.queue = _kue2.default.createQueue(config);
+                this.app.queue = _kue2.default.createQueue(this.kueConfig);
+
+                // https://github.com/Automattic/kue#error-handling
+                this.app.queue.on('error', function (err) {
+                  _this2.log.error(err);
+                });
+
+                // https://github.com/Automattic/kue#unstable-redis-connections
+                this.app.queue.watchStuckJobs(this.kueConfig.watchStuckJobsInterval);
 
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
-                _context2.prev = 16;
+                _context2.prev = 18;
 
                 _loop = function _loop() {
                   var key = _step.value;
@@ -96,14 +104,14 @@ var MagnetKue = function (_Base) {
 
                   if (queue.process) {
                     processArgs.push(function () {
-                      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(data, done) {
+                      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(data, ctx, done) {
                         return regeneratorRuntime.wrap(function _callee$(_context) {
                           while (1) {
                             switch (_context.prev = _context.next) {
                               case 0:
                                 _context.prev = 0;
                                 _context.next = 3;
-                                return queue.process.call(_this2, _this2.app, data);
+                                return queue.process.call(_this2, _this2.app, data, ctx);
 
                               case 3:
                                 _context.t0 = _context.sent;
@@ -125,7 +133,7 @@ var MagnetKue = function (_Base) {
                         }, _callee, _this2, [[0, 7]]);
                       }));
 
-                      return function (_x, _x2) {
+                      return function (_x, _x2, _x3) {
                         return ref.apply(this, arguments);
                       };
                     }());
@@ -139,45 +147,45 @@ var MagnetKue = function (_Base) {
                 for (_iterator = Object.keys(queues)[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   _loop();
                 }
-                _context2.next = 25;
+                _context2.next = 27;
                 break;
 
-              case 21:
-                _context2.prev = 21;
-                _context2.t1 = _context2['catch'](16);
+              case 23:
+                _context2.prev = 23;
+                _context2.t1 = _context2['catch'](18);
                 _didIteratorError = true;
                 _iteratorError = _context2.t1;
 
-              case 25:
-                _context2.prev = 25;
-                _context2.prev = 26;
+              case 27:
+                _context2.prev = 27;
+                _context2.prev = 28;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 28:
-                _context2.prev = 28;
+              case 30:
+                _context2.prev = 30;
 
                 if (!_didIteratorError) {
-                  _context2.next = 31;
+                  _context2.next = 33;
                   break;
                 }
 
                 throw _iteratorError;
 
-              case 31:
-                return _context2.finish(28);
-
-              case 32:
-                return _context2.finish(25);
-
               case 33:
+                return _context2.finish(30);
+
+              case 34:
+                return _context2.finish(27);
+
+              case 35:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[2, 9], [16, 21, 25, 33], [26,, 28, 32]]);
+        }, _callee2, this, [[2, 9], [18, 23, 27, 35], [28,, 30, 34]]);
       }));
 
       function setup() {
@@ -185,6 +193,70 @@ var MagnetKue = function (_Base) {
       }
 
       return setup;
+    }()
+  }, {
+    key: 'start',
+    value: function () {
+      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (this.kueConfig.listen) {
+                  _kue2.default.app.listen(this.kueConfig.listen);
+                }
+
+              case 1:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function start() {
+        return ref.apply(this, arguments);
+      }
+
+      return start;
+    }()
+  }, {
+    key: 'teardown',
+    value: function () {
+      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+        var _this3 = this,
+            _arguments = arguments;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                return _context4.abrupt('return', new Promise(function (resolve, reject) {
+                  _this3.app.queue.shutdown(_this3.kueConfig.listen, function (err, result) {
+                    _this3.app.log.error('Kue shutdown result: ', _arguments);
+
+                    if (err) {
+                      reject(err);
+                      return;
+                    }
+
+                    resolve(result);
+                  });
+                }));
+
+              case 1:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function teardown() {
+        return ref.apply(this, arguments);
+      }
+
+      return teardown;
     }()
   }]);
 

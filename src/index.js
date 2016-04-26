@@ -6,7 +6,7 @@ import defaultConfig from './config/kue';
 
 export default class MagnetKue extends Base {
   async setup() {
-    let config = Object.assign(defaultConfig, this.config.kue);
+    this.kueConfig = Object.assign(defaultConfig, this.config.kue);
     let queues = {};
     try {
       const folderPath = `${process.cwd()}/server/job_queues`;
@@ -16,7 +16,15 @@ export default class MagnetKue extends Base {
       this.log.warn(err);
     }
 
-    this.app.queue = kue.createQueue(config);
+    this.app.queue = kue.createQueue(this.kueConfig);
+
+    // https://github.com/Automattic/kue#error-handling
+    this.app.queue.on('error', (err) => {
+      this.log.error(err);
+    });
+
+    // https://github.com/Automattic/kue#unstable-redis-connections
+    this.app.queue.watchStuckJobs(this.kueConfig.watchStuckJobsInterval);
 
     for (let key of Object.keys(queues)) {
       let queue = queues[key].default || queues[key];
@@ -27,9 +35,9 @@ export default class MagnetKue extends Base {
       }
 
       if (queue.process) {
-        processArgs.push(async (data, done) => {
+        processArgs.push(async (data, ctx, done) => {
           try {
-            done(null, await queue.process.call(this, this.app, data));
+            done(null, await queue.process.call(this, this.app, data, ctx));
           } catch (err) {
             done(err);
           }
@@ -40,5 +48,26 @@ export default class MagnetKue extends Base {
 
       this.app.queue.process.apply(this.app.queue, processArgs);
     }
+  }
+
+  async start() {
+    if (this.kueConfig.listen) {
+      kue.app.listen(this.kueConfig.listen);
+    }
+  }
+
+  async teardown() {
+    return new Promise((resolve, reject) => {
+      this.app.queue.shutdown(this.kueConfig.listen, (err, result) => {
+        this.app.log.error( 'Kue shutdown result: ', arguments);
+
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(result);
+      });
+    });
   }
 }
