@@ -57,7 +57,7 @@ var MagnetKue = function (_Base) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                this.kueConfig = Object.assign(_kue4.default, this.config.kue);
+                this.kueConfig = Object.assign(_kue4.default, this.config.kue, this.options);
                 queues = {};
                 _context2.prev = 2;
                 folderPath = process.cwd() + '/server/job_queues';

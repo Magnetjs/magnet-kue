@@ -6,7 +6,7 @@ import defaultConfig from './config/kue';
 
 export default class MagnetKue extends Base {
   async setup() {
-    this.kueConfig = Object.assign(defaultConfig, this.config.kue);
+    this.kueConfig = Object.assign(defaultConfig, this.config.kue, this.options);
     let queues = {};
     try {
       const folderPath = `${process.cwd()}/server/job_queues`;
