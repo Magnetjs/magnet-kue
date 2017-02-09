@@ -1,5 +1,3 @@
-// import requireAll from 'require-all'
-// import fs from 'mz/fs'
 import kue from 'kue'
 import Base from 'magnet-core/base'
 import defaultConfig from './config/kue'
@@ -36,38 +34,6 @@ export default class MagnetKue extends Base {
         })
       })
     }
-
-    // let queues = {}
-    // try {
-    //   const folderPath = `${process.cwd()}/server/job_queues`
-    //   await fs.exists(folderPath)
-    //   queues = requireAll(folderPath)
-    // } catch (err) {
-    //   this.log.warn(err)
-    // }
-
-    // for (let key of Object.keys(queues)) {
-    //   let queue = queues[key].default || queues[key]
-    //   let name = queue.name || key
-    //   let processArgs = [name]
-    //   if (queue.concurrency) {
-    //     processArgs.push(queue.concurrency)
-    //   }
-    //
-    //   if (queue.process) {
-    //     processArgs.push(async (data, ctx, done) => {
-    //       try {
-    //         done(null, await queue.process.call(this, this.app, data, ctx))
-    //       } catch (err) {
-    //         done(err)
-    //       }
-    //     })
-    //   } else {
-    //     this.log.warn(`No process for ${name}`)
-    //   }
-    //
-    //   this.app.kue.process.apply(this.app.kue, processArgs)
-    // }
   }
 
   async teardown () {
