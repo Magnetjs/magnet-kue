@@ -1,6 +1,6 @@
 {
   "name": "magnet-kue",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Magnet's adapter for Kue",
   "keywords": [
     "kue",
@@ -12,7 +12,7 @@
     "url": "https://github.com/Magnetjs/magnet-kue/issues"
   },
   "license": "MIT",
-  "author": "Kieve Chua <kievechua@gmail.com>",
+  "author": "Kieve Chua <kievechua@gmail.com> (https://github.com/kievechua)",
   "files": [
     "README",
     "CHANGELOG.md",
