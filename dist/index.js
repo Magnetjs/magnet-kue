@@ -6,19 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _requireAll = require('require-all');
-
-var _requireAll2 = _interopRequireDefault(_requireAll);
-
-var _fs = require('mz/fs');
-
-var _fs2 = _interopRequireDefault(_fs);
-
 var _kue = require('kue');
 
 var _kue2 = _interopRequireDefault(_kue);
 
-var _base = require('magnet-core/dist/base');
+var _base = require('magnet-core/base');
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -34,7 +26,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // import requireAll from 'require-all'
+// import fs from 'mz/fs'
+
 
 var MagnetKue = function (_Base) {
   _inherits(MagnetKue, _Base);
@@ -48,43 +42,28 @@ var MagnetKue = function (_Base) {
   _createClass(MagnetKue, [{
     key: 'setup',
     value: function () {
+<<<<<<< Updated upstream
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+=======
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+>>>>>>> Stashed changes
         var _this2 = this;
 
-        var queues, folderPath, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _loop, _iterator, _step;
-
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
                 this.kueConfig = Object.assign(_kue4.default, this.config.kue, this.options);
-                queues = {};
-                _context2.prev = 2;
-                folderPath = process.cwd() + '/server/job_queues';
-                _context2.next = 6;
-                return _fs2.default.exists(folderPath);
 
-              case 6:
-                queues = (0, _requireAll2.default)(folderPath);
-                _context2.next = 12;
-                break;
-
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2['catch'](2);
-
-                this.log.warn(_context2.t0);
-
-              case 12:
-
-                this.app.queue = _kue2.default.createQueue(this.kueConfig);
+                this.app.kue = _kue2.default.createQueue(this.kueConfig);
 
                 // https://github.com/Automattic/kue#error-handling
-                this.app.queue.on('error', function (err) {
+                this.app.kue.on('error', function (err) {
                   _this2.log.error(err);
                 });
 
                 // https://github.com/Automattic/kue#unstable-redis-connections
+<<<<<<< Updated upstream
                 this.app.queue.watchStuckJobs(this.kueConfig.watchStuckJobsInterval);
 
                 _iteratorNormalCompletion = true;
@@ -171,22 +150,66 @@ var MagnetKue = function (_Base) {
                 if (!_didIteratorError) {
                   _context2.next = 33;
                   break;
+=======
+                this.app.kue.watchStuckJobs(this.kueConfig.watchStuckJobsInterval);
+
+                if (this.kueConfig.removeOnComplete) {
+                  this.app.kue.on('job complete', function (id, result) {
+                    _kue2.default.Job.get(id, function (err, job) {
+                      if (err) {
+                        _this2.log.error(err);
+                        return;
+                      }
+                      job.remove(function (err) {
+                        if (err) {
+                          _this2.log.error(err);
+                          return;
+                        }
+                        _this2.log.info('removed completed job #%d', job.id);
+                      });
+                    });
+                  });
+>>>>>>> Stashed changes
                 }
 
-                throw _iteratorError;
+                // let queues = {}
+                // try {
+                //   const folderPath = `${process.cwd()}/server/job_queues`
+                //   await fs.exists(folderPath)
+                //   queues = requireAll(folderPath)
+                // } catch (err) {
+                //   this.log.warn(err)
+                // }
 
-              case 33:
-                return _context2.finish(30);
+                // for (let key of Object.keys(queues)) {
+                //   let queue = queues[key].default || queues[key]
+                //   let name = queue.name || key
+                //   let processArgs = [name]
+                //   if (queue.concurrency) {
+                //     processArgs.push(queue.concurrency)
+                //   }
+                //
+                //   if (queue.process) {
+                //     processArgs.push(async (data, ctx, done) => {
+                //       try {
+                //         done(null, await queue.process.call(this, this.app, data, ctx))
+                //       } catch (err) {
+                //         done(err)
+                //       }
+                //     })
+                //   } else {
+                //     this.log.warn(`No process for ${name}`)
+                //   }
+                //
+                //   this.app.kue.process.apply(this.app.kue, processArgs)
+                // }
 
-              case 34:
-                return _context2.finish(27);
-
-              case 35:
+              case 5:
               case 'end':
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2, this, [[2, 9], [18, 23, 27, 35], [28,, 30, 34]]);
+        }, _callee, this);
       }));
 
       function setup() {
@@ -196,6 +219,7 @@ var MagnetKue = function (_Base) {
       return setup;
     }()
   }, {
+<<<<<<< Updated upstream
     key: 'start',
     value: function () {
       var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
@@ -227,16 +251,21 @@ var MagnetKue = function (_Base) {
       var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
         var _this3 = this,
             _arguments = arguments;
+=======
+    key: 'teardown',
+    value: function () {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+        var _this3 = this;
+>>>>>>> Stashed changes
 
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                return _context4.abrupt('return', new Promise(function (resolve, reject) {
-                  _this3.app.queue.shutdown(_this3.kueConfig.listen, function (err, result) {
-                    _this3.app.log.error('Kue shutdown result: ', _arguments);
-
+                return _context2.abrupt('return', new Promise(function (resolve, reject) {
+                  _this3.app.kue.shutdown(_this3.kueConfig.shuwtdownTimeout, function (err, result) {
                     if (err) {
+                      _this3.app.log.error(err);
                       reject(err);
                       return;
                     }
@@ -247,14 +276,18 @@ var MagnetKue = function (_Base) {
 
               case 1:
               case 'end':
-                return _context4.stop();
+                return _context2.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee2, this);
       }));
 
       function teardown() {
+<<<<<<< Updated upstream
         return _ref4.apply(this, arguments);
+=======
+        return _ref2.apply(this, arguments);
+>>>>>>> Stashed changes
       }
 
       return teardown;

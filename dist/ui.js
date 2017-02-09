@@ -49,6 +49,8 @@ var KueUI = function (_Base) {
     key: 'setup',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
         var config, app;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -76,7 +78,9 @@ var KueUI = function (_Base) {
                 }
 
                 app.use(_kue2.default.app);
-                app.listen(config.ui.listen);
+                app.listen(config.ui.listen, function () {
+                  _this2.log.info('Server started at port ' + config.ui.listen);
+                });
 
               case 8:
               case 'end':
