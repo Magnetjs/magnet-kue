@@ -75,11 +75,10 @@ var KueUI = function (_Base) {
                   _kue2.default.app.set('title', config.ui.title);
                 }
 
-                console.log(config.ui.listen);
                 app.use(_kue2.default.app);
                 app.listen(config.ui.listen);
 
-              case 9:
+              case 8:
               case 'end':
                 return _context.stop();
             }

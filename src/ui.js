@@ -25,7 +25,6 @@ export default class KueUI extends Base {
       kue.app.set('title', config.ui.title)
     }
 
-    console.log(config.ui.listen);
     app.use(kue.app)
     app.listen(config.ui.listen)
   }
