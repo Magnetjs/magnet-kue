@@ -10,7 +10,7 @@ export default class KueUI extends Base {
 
     if (!config.ui) return
 
-    var app = express(config.ui.express)
+    const app = express(config.ui.express)
 
     if (config.ui.basicAuth) {
       app.use(
@@ -26,6 +26,8 @@ export default class KueUI extends Base {
     }
 
     app.use(kue.app)
-    app.listen(config.ui.listen)
+    app.listen(config.ui.listen, () => {
+      this.log.info(`Server started at port ${config.ui.listen}`)
+    })
   }
 }
