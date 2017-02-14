@@ -27,7 +27,7 @@ export default class KueUI extends Base {
 
     app.use(kue.app)
     app.listen(config.ui.listen, () => {
-      this.log.info(`Server started at port ${config.ui.listen}`)
+      this.log.info(`Kue UI server started at port ${config.ui.listen}`)
     })
   }
 }

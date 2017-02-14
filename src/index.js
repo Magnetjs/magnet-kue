@@ -29,7 +29,6 @@ export default class MagnetKue extends Base {
               this.log.error(err)
               return
             }
-            this.log.info('removed completed job #%d', job.id)
           })
         })
       })
