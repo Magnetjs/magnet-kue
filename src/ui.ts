@@ -1,12 +1,13 @@
-import kue from 'kue'
-import express from 'express'
-import Base from 'magnet-core/base'
-import basicAuth from 'basic-auth-connect'
+import * as kue from 'kue'
+import * as express from 'express'
+import { Module } from 'magnet-core/module'
+import * as basicAuth from 'basic-auth-connect'
+
 import defaultConfig from './config/kue'
 
-export default class KueUI extends Base {
+export default class KueUI extends Module {
   async setup () {
-    const config = Object.assign(defaultConfig, this.config.kue, this.options)
+    const config = this.prepareConfig('kue', defaultConfig)
 
     if (!config.ui) return
 

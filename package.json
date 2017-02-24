@@ -1,6 +1,6 @@
 {
   "name": "magnet-kue",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Magnet's adapter for Kue",
   "keywords": [
     "kue",
@@ -50,10 +50,12 @@
     ]
   },
   "dependencies": {
+    "@types/node": "^7.0.5",
     "basic-auth-connect": "^1.0.0",
     "express": "^4.14.1",
     "kue": "0.x.x",
-    "magnet-core": "^3.2.2"
+    "magnet-core": "^3.5.2",
+    "typescript": "^2.2.1"
   },
   "devDependencies": {
     "ava": "^0.18.1",
@@ -67,7 +69,7 @@
     "concurrently": "^3.3.0",
     "fast-async": "^6.2.0",
     "nodemon": "^1.9.1",
-    "rimraf": "^2.5.4",
+    "rimraf": "^2.6.1",
     "standard": "^9.0.0-beta.0",
     "tap-spec": "^4.1.1"
   },
