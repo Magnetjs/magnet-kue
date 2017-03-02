@@ -7,9 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 const kue = require("kue");
-const express = require("express");
 const module_1 = require("magnet-core/module");
 const basicAuth = require("basic-auth-connect");
 const kue_1 = require("./config/kue");
@@ -19,19 +17,16 @@ class KueUI extends module_1.Module {
             const config = this.prepareConfig('kue', kue_1.default);
             if (!config.ui)
                 return;
-            const app = express(config.ui.express);
             if (config.ui.basicAuth) {
-                app.use(basicAuth(config.ui.basicAuth.username, config.ui.basicAuth.password));
+                this.app.express.use(basicAuth(config.ui.basicAuth.username, config.ui.basicAuth.password));
             }
             if (config.ui.title) {
                 kue.app.set('title', config.ui.title);
             }
-            app.use(kue.app);
-            app.listen(config.ui.listen, () => {
-                this.log.info(`Kue UI server started at port ${config.ui.listen}`);
-            });
+            this.app.express.use(kue.app);
         });
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = KueUI;
 //# sourceMappingURL=ui.js.map
