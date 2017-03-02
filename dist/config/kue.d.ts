@@ -7,9 +7,7 @@ declare var _default: {
         port: number;
     };
     ui: {
-        listen: number;
         title: string;
-        express: {};
         basicAuth: {
             username: string;
             password: string;

@@ -1,5 +1,4 @@
 import * as kue from 'kue'
-import * as express from 'express'
 import { Module } from 'magnet-core/module'
 import * as basicAuth from 'basic-auth-connect'
 
@@ -11,10 +10,8 @@ export default class KueUI extends Module {
 
     if (!config.ui) return
 
-    const app = express(config.ui.express)
-
     if (config.ui.basicAuth) {
-      app.use(
+      this.app.express.use(
         basicAuth(
           config.ui.basicAuth.username,
           config.ui.basicAuth.password
@@ -26,9 +23,6 @@ export default class KueUI extends Module {
       kue.app.set('title', config.ui.title)
     }
 
-    app.use(kue.app)
-    app.listen(config.ui.listen, () => {
-      this.log.info(`Kue UI server started at port ${config.ui.listen}`)
-    })
+    this.app.express.use(kue.app)
   }
 }

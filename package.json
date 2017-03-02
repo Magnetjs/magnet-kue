@@ -1,6 +1,6 @@
 {
   "name": "magnet-kue",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Magnet's adapter for Kue",
   "keywords": [
     "kue",
@@ -18,57 +18,26 @@
   "repository": "magnetjs/magnet-kue",
   "scripts": {
     "build": "npm run clean-lib && npm run build:index && npm run copy-package",
-    "build:index": "babel src --out-dir dist",
+    "build:index": "node_modules/.bin/tsc",
     "clean-lib": "node_modules/.bin/rimraf ./dist",
     "copy-package": "cp -rf package.json LICENSE README.md dist",
     "dist": "npm run build && cd dist && npm publish",
-    "start": "babel src --out-dir dist",
     "test": "ava | tap-spec",
-    "watch": "nodemon --ignore dist --exec \"babel src\" --out-dir dist",
+    "watch": "node_modules/.bin/tsc -w",
     "watch-all": "concurrently \"npm run watch\" \"npm run watch-test\"",
     "watch-test": "ava --watch | tap-spec"
-  },
-  "babel": {
-    "ignore": [
-      "docs",
-      "node_modules",
-      "dist",
-      "test"
-    ],
-    "plugins": [
-      "fast-async"
-    ],
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
   },
   "dependencies": {
     "@types/node": "^7.0.5",
     "basic-auth-connect": "^1.0.0",
-    "express": "^4.14.1",
     "kue": "0.x.x",
     "magnet-core": "^3.5.2",
     "typescript": "^2.2.1"
   },
   "devDependencies": {
     "ava": "^0.18.1",
-    "babel-cli": "^6.7.7",
-    "babel-core": "^6.7.7",
-    "babel-plugin-transform-async-to-generator": "^6.7.0",
-    "babel-plugin-transform-runtime": "^6.6.0",
-    "babel-preset-env": "^1.1.8",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-stage-0": "^6.5.0",
     "concurrently": "^3.3.0",
     "fast-async": "^6.2.0",
-    "nodemon": "^1.9.1",
     "rimraf": "^2.6.1",
     "standard": "^9.0.0-beta.0",
     "tap-spec": "^4.1.1"
@@ -82,11 +51,6 @@
     "source": [
       "**/*.{js,jsx}",
       "!dist/**/*"
-    ],
-    "require": [
-      "babel-core/register",
-      "babel-polyfill"
-    ],
-    "babel": "inherit"
+    ]
   }
 }
