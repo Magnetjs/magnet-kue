@@ -13,9 +13,7 @@ exports.default = {
         port: 6379
     },
     ui: {
-        listen: 3000,
         title: '',
-        express: {},
         basicAuth: {
             username: '',
             password: ''

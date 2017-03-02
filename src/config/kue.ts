@@ -15,9 +15,7 @@ export default {
   },
 
   ui: {
-    listen: 3000,
     title: '',
-    express: {},
     basicAuth: {
       username: '',
       password: ''
