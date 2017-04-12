@@ -11,22 +11,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const kue = require("kue");
 const module_1 = require("magnet-core/module");
 const basicAuth = require("basic-auth-connect");
-const kue_1 = require("./config/kue");
-class KueUI extends module_1.Module {
+class MagnetKueUI extends module_1.Module {
+    get moduleName() { return 'kue'; }
+    get defaultConfig() { return __dirname; }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
-            const config = this.prepareConfig('kue', kue_1.default);
-            if (!config.ui)
+            if (!this.config.ui)
                 return;
-            if (config.ui.basicAuth) {
-                this.app.express.use(basicAuth(config.ui.basicAuth.username, config.ui.basicAuth.password));
+            if (this.config.ui.basicAuth) {
+                this.app.express.use(basicAuth(this.config.ui.basicAuth.username, this.config.ui.basicAuth.password));
             }
-            if (config.ui.title) {
-                kue.app.set('title', config.ui.title);
+            if (this.config.ui.title) {
+                kue.app.set('title', this.config.ui.title);
             }
             this.app.express.use(kue.app);
         });
     }
 }
-exports.default = KueUI;
+exports.default = MagnetKueUI;
 //# sourceMappingURL=ui.js.map
