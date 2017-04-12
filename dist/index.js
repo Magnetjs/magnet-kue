@@ -8,26 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const kue = require("kue");
 const module_1 = require("magnet-core/module");
-const kue_1 = require("./config/kue");
+const kue = require("kue");
 class MagnetKue extends module_1.Module {
+    get moduleName() { return 'kue'; }
+    get defaultConfig() { return __dirname; }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.kueConfig = Object.assign(kue_1.default, this.config.kue, this.options);
-            if (this.kueConfig.magnet) {
-                this.kueConfig.redis = {
-                    createClientFactory: this.app[this.kueConfig.magnet]
+            // this.config = Object.assign(defaultConfig, this.config.kue, this.options)
+            if (this.config.magnet) {
+                this.config.redis = {
+                    createClientFactory: this.app[this.config.magnet]
                 };
             }
-            this.app.kue = kue.createQueue(this.kueConfig);
+            this.app.kue = kue.createQueue(this.config);
             // https://github.com/Automattic/kue#error-handling
             this.app.kue.on('error', (err) => {
                 this.log.error(err);
             });
             // https://github.com/Automattic/kue#unstable-redis-connections
-            this.app.kue.watchStuckJobs(this.kueConfig.watchStuckJobsInterval);
-            if (this.kueConfig.removeOnComplete) {
+            this.app.kue.watchStuckJobs(this.config.watchStuckJobsInterval);
+            if (this.config.removeOnComplete) {
                 this.app.kue
                     .on('job complete', (id, result) => {
                     kue.Job.get(id, (err, job) => {
@@ -48,7 +49,7 @@ class MagnetKue extends module_1.Module {
     teardown() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                this.app.kue.shutdown(this.kueConfig.shutdownTimeout, (err, result) => {
+                this.app.kue.shutdown(this.config.shutdownTimeout, (err, result) => {
                     if (err) {
                         this.app.log.error(err);
                         reject(err);
