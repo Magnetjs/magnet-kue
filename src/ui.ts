@@ -2,25 +2,25 @@ import * as kue from 'kue'
 import { Module } from 'magnet-core/module'
 import * as basicAuth from 'basic-auth-connect'
 
-import defaultConfig from './config/kue'
-
 export default class KueUI extends Module {
+  log: any
+  config: any
+  app: any
+
   async setup () {
-    const config = this.prepareConfig('kue', defaultConfig)
+    if (!this.config.ui) return
 
-    if (!config.ui) return
-
-    if (config.ui.basicAuth) {
+    if (this.config.ui.basicAuth) {
       this.app.express.use(
         basicAuth(
-          config.ui.basicAuth.username,
-          config.ui.basicAuth.password
+          this.config.ui.basicAuth.username,
+          this.config.ui.basicAuth.password
         )
       )
     }
 
-    if (config.ui.title) {
-      kue.app.set('title', config.ui.title)
+    if (this.config.ui.title) {
+      kue.app.set('title', this.config.ui.title)
     }
 
     this.app.express.use(kue.app)

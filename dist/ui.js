@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const kue = require("kue");
 const module_1 = require("magnet-core/module");
 const basicAuth = require("basic-auth-connect");
@@ -27,6 +28,5 @@ class KueUI extends module_1.Module {
         });
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = KueUI;
 //# sourceMappingURL=ui.js.map
