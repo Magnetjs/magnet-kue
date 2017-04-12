@@ -1,6 +1,6 @@
 {
   "name": "magnet-kue",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Magnet's adapter for Kue",
   "keywords": [
     "kue",
@@ -30,7 +30,6 @@
   "dependencies": {
     "@types/node": "^7.0.5",
     "basic-auth-connect": "^1.0.0",
-    "express": "^4.14.1",
     "kue": "0.x.x",
     "magnet-core": "^3.5.2",
     "typescript": "^2.2.1"
