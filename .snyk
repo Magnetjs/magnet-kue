@@ -1,0 +1,49 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - kue > stylus > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > finalhandler > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > nib > stylus > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > body-parser > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > send > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > serve-static > send > debug:
+        patched: '2022-10-07T21:49:25.025Z'
+  SNYK-JS-LODASH-567746:
+    - kue > lodash:
+        patched: '2022-10-07T21:49:25.025Z'
+    - magnet-core > lodash:
+        patched: '2022-10-07T21:49:25.025Z'
+  'npm:mime:20170907':
+    - kue > express > send > mime:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > serve-static > send > mime:
+        patched: '2022-10-07T21:49:25.025Z'
+  'npm:ms:20170412':
+    - kue > body-parser > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > stylus > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > send > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > send > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > finalhandler > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > nib > stylus > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > serve-static > send > ms:
+        patched: '2022-10-07T21:49:25.025Z'
+    - kue > express > serve-static > send > debug > ms:
+        patched: '2022-10-07T21:49:25.025Z'
